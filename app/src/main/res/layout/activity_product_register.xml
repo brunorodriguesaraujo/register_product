@@ -19,7 +19,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutName"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
@@ -32,14 +32,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nome"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/size_16" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutDescription"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
@@ -52,14 +51,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/size_16" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutValue"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/TextInputLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
@@ -72,7 +70,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/value"
-            android:textColorHint="@color/black"
             android:textSize="@dimen/size_16" />
 
     </com.google.android.material.textfield.TextInputLayout>
