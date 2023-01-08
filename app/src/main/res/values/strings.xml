@@ -6,4 +6,6 @@
     <string name="description">Descrição</string>
     <string name="value">Valor</string>
     <string name="save">Salvar</string>
+    <string name="url">URL</string>
+    <string name="load">Carregar</string>
 </resources>

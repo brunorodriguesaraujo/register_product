@@ -29,9 +29,11 @@
         app:layout_constraintTop_toBottomOf="@+id/ivProduct">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/nome"
+            android:inputType="text"
             android:textSize="@dimen/size_16" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -48,9 +50,11 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description"
+            android:inputType="text"
             android:textSize="@dimen/size_16" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -67,6 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditTextValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/value"
