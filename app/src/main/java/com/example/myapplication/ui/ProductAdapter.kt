@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemProductBinding
+import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.extension.toFormatCurrencyBrazilian
 import com.example.myapplication.model.ProductModel
 
@@ -23,7 +24,8 @@ class ProductAdapter(private val products: List<ProductModel>) :
     inner class ViewHolder(private val binding: ItemProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: ProductModel) = with(binding) {
-            tvTitle.text = product.title
+            ivProduct.loadUrl(product.url)
+            tvTitle.text = product.name
             tvDescription.text = product.description
             tvValue.text = product.value.toFormatCurrencyBrazilian()
         }
