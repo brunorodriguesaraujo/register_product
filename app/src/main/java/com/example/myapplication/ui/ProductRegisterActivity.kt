@@ -3,7 +3,7 @@ package com.example.myapplication.ui
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.dao.ProductDAO
 import com.example.myapplication.databinding.ActivityProductRegisterBinding
 import com.example.myapplication.databinding.LayoutAddImageBinding
 import com.example.myapplication.extension.loadUrl
@@ -12,20 +12,14 @@ import com.example.myapplication.model.ProductModel
 class ProductRegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductRegisterBinding
-    private lateinit var viewModel: ProductViewModel
     private var url = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initViewModel()
         binding = ActivityProductRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setListenerImage()
         setListenerButtonSave()
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this)[ProductViewModel::class.java]
     }
 
     private fun setListenerImage() {
@@ -48,9 +42,10 @@ class ProductRegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun setListenerButtonSave() =  with(binding){
+    private fun setListenerButtonSave() = with(binding) {
+        val productDAO = ProductDAO()
         btnSave.setOnClickListener {
-            viewModel.addProduct(
+            productDAO.addProduct(
                 ProductModel(
                     url = this@ProductRegisterActivity.url,
                     name = textInputEditTextName.text.toString(),

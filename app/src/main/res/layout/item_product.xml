@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/material_dynamic_neutral90"
     android:layout_marginHorizontal="@dimen/margin_8"
     android:layout_marginTop="@dimen/margin_16">
 
@@ -24,18 +25,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_8"
         android:textSize="@dimen/size_20"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivProduct"
         app:layout_constraintTop_toTopOf="@id/ivProduct"
-        tools:text="Title" />
+        tools:text="Nome" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/size_20"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/tvValue"
         app:layout_constraintEnd_toEndOf="@+id/tvTitle"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
@@ -47,6 +50,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="@dimen/size_20"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/ivProduct"
         app:layout_constraintEnd_toEndOf="@+id/tvTitle"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"

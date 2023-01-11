@@ -12,7 +12,13 @@ class ProductAdapter(private val products: List<ProductModel>) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemProductBinding.inflate(LayoutInflater.from(parent.context)))
+        return ViewHolder(
+            ItemProductBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
