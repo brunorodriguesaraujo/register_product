@@ -2,4 +2,10 @@
     <string name="app_name">My Application</string>
     <string name="button_add_products_content">add products</string>
     <string name="image_product_content">image product</string>
+    <string name="nome">Nome</string>
+    <string name="description">Descrição</string>
+    <string name="value">Valor</string>
+    <string name="save">Salvar</string>
+    <string name="url">URL</string>
+    <string name="load">Carregar</string>
 </resources>
