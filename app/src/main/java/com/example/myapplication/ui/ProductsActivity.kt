@@ -24,13 +24,20 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun setListener() {
         binding.productsFab.setOnClickListener {
-            val intent = Intent(this, ProductRegisterActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ProductRegisterActivity::class.java))
         }
     }
 
     private fun setAdapter() {
         val products = ProductDAO()
-        binding.rvProducts.adapter = ProductAdapter(products.getProducts())
+        binding.rvProducts.apply {
+            adapter = ProductAdapter(products.getProducts()) {
+                val intent = Intent(this@ProductsActivity, ProductDetailActivity::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("product", it)
+                intent.putExtras(bundle)
+                startActivity(intent)
+            }
+        }
     }
 }

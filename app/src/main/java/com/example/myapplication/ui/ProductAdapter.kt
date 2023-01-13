@@ -8,8 +8,10 @@ import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.extension.toFormatCurrencyBrazilian
 import com.example.myapplication.model.ProductModel
 
-class ProductAdapter(private val products: List<ProductModel>) :
-    RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+class ProductAdapter(
+    private val products: List<ProductModel>,
+    private val listener: (product: ProductModel) -> Unit
+) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -34,6 +36,7 @@ class ProductAdapter(private val products: List<ProductModel>) :
             tvTitle.text = product.name
             tvDescription.text = product.description
             tvValue.text = product.value.toFormatCurrencyBrazilian()
+            root.setOnClickListener { listener(product) }
         }
     }
 }
