@@ -3,7 +3,7 @@ package com.example.myapplication.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.dao.ProductDAO
+import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductsBinding
 
 class ProductsActivity : AppCompatActivity() {
@@ -29,9 +29,10 @@ class ProductsActivity : AppCompatActivity() {
     }
 
     private fun setAdapter() {
-        val products = ProductDAO()
+        val db = AppDatabase.instance(this)
+        val productDAO = db.productDao()
         binding.rvProducts.apply {
-            adapter = ProductAdapter(products.getProducts()) {
+            adapter = ProductAdapter(productDAO.getProducts()) {
                 val intent = Intent(this@ProductsActivity, ProductDetailActivity::class.java)
                 val bundle = Bundle()
                 bundle.putParcelable("product", it)

@@ -3,7 +3,7 @@ package com.example.myapplication.ui
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.dao.ProductDAO
+import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductRegisterBinding
 import com.example.myapplication.databinding.LayoutAddImageBinding
 import com.example.myapplication.extension.loadUrl
@@ -43,7 +43,8 @@ class ProductRegisterActivity : AppCompatActivity() {
     }
 
     private fun setListenerButtonSave() = with(binding) {
-        val productDAO = ProductDAO()
+        val db = AppDatabase.instance(this@ProductRegisterActivity)
+        val productDAO = db.productDao()
         btnSave.setOnClickListener {
             productDAO.addProduct(
                 ProductModel(
