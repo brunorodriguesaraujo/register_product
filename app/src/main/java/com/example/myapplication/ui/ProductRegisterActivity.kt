@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.database.AppDatabase
+import com.example.myapplication.database.dao.ProductDAO
 import com.example.myapplication.databinding.ActivityProductRegisterBinding
 import com.example.myapplication.databinding.LayoutAddImageBinding
 import com.example.myapplication.extension.loadUrl
@@ -13,13 +14,36 @@ class ProductRegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductRegisterBinding
     private var url = ""
+    private var product: ProductModel? = null
+    private var productDAO: ProductDAO? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        initDatabase()
         setListenerImage()
         setListenerButtonSave()
+        getProduct()
+        setFields()
+    }
+
+    private fun initDatabase() {
+        productDAO = AppDatabase.instance(this).productDao()
+    }
+
+    private fun getProduct() {
+        val bundle = intent.extras
+        product = bundle?.getParcelable("product")
+    }
+
+    private fun setFields() = with(binding) {
+        product?.let {
+            textInputEditTextName.setText(it.name)
+            textInputEditTextDescription.setText(it.description)
+            textInputEditTextValue.setText(it.value.toString())
+        }
+
     }
 
     private fun setListenerImage() {
@@ -43,17 +67,18 @@ class ProductRegisterActivity : AppCompatActivity() {
     }
 
     private fun setListenerButtonSave() = with(binding) {
-        val db = AppDatabase.instance(this@ProductRegisterActivity)
-        val productDAO = db.productDao()
         btnSave.setOnClickListener {
-            productDAO.addProduct(
-                ProductModel(
-                    url = this@ProductRegisterActivity.url,
-                    name = textInputEditTextName.text.toString(),
-                    description = textInputEditTextDescription.text.toString(),
-                    value = textInputEditTextValue.text.toString().toBigDecimal()
-                )
+            val productModel = ProductModel(
+                url = this@ProductRegisterActivity.url,
+                name = textInputEditTextName.text.toString(),
+                description = textInputEditTextDescription.text.toString(),
+                value = textInputEditTextValue.text.toString().toBigDecimal()
             )
+            if (product != null) {
+                productDAO?.updateProduct(productModel)
+            } else {
+                productDAO?.addProduct(productModel)
+            }
             finish()
         }
     }

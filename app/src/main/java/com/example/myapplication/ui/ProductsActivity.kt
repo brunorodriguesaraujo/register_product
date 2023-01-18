@@ -34,9 +34,7 @@ class ProductsActivity : AppCompatActivity() {
         binding.rvProducts.apply {
             adapter = ProductAdapter(productDAO.getProducts()) {
                 val intent = Intent(this@ProductsActivity, ProductDetailActivity::class.java)
-                val bundle = Bundle()
-                bundle.putParcelable("product", it)
-                intent.putExtras(bundle)
+                intent.putExtra("id", it.id)
                 startActivity(intent)
             }
         }
