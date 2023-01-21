@@ -6,8 +6,8 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.constants.ID
 import com.example.myapplication.database.AppDatabase
-import com.example.myapplication.database.dao.ProductDAO
 import com.example.myapplication.databinding.ActivityProductDetailBinding
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.extension.toFormatCurrencyBrazilian
@@ -17,13 +17,18 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
     private var product: ProductModel? = null
-    private var productDao: ProductDAO? = null
+    private val productDao by lazy {
+        AppDatabase.instance(this).productDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        productDao = AppDatabase.instance(this).productDao()
+    }
+
+    override fun onResume() {
+        super.onResume()
         getProduct()
         setFields()
     }
@@ -37,15 +42,12 @@ class ProductDetailActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.itemEdit -> {
                 val intent = Intent(this, ProductRegisterActivity::class.java)
-                val bundle = Bundle()
-                bundle.putParcelable("product", product)
-                intent.putExtras(bundle)
+                product?.let { intent.putExtra("id", it.id) }
                 startActivity(intent)
-                finish()
             }
             R.id.itemDelete -> {
                 product?.let {
-                    productDao?.deleteProduct(it)
+                    productDao.deleteProduct(it)
                     finish()
                 }
             }
@@ -54,8 +56,8 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     private fun getProduct() {
-        val id = intent.getLongExtra("id", 0)
-        product = productDao?.getProductById(id)
+        val id = intent.getLongExtra(ID, 0)
+        product = productDao.getProductById(id)
     }
 
     private fun setFields() = with(binding) {
@@ -65,6 +67,5 @@ class ProductDetailActivity : AppCompatActivity() {
             tvName.text = it.name
             tvDescription.text = it.description
         }
-
     }
 }

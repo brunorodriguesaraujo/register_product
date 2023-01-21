@@ -3,6 +3,7 @@ package com.example.myapplication.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.constants.ID
 import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductsBinding
 
@@ -34,7 +35,7 @@ class ProductsActivity : AppCompatActivity() {
         binding.rvProducts.apply {
             adapter = ProductAdapter(productDAO.getProducts()) {
                 val intent = Intent(this@ProductsActivity, ProductDetailActivity::class.java)
-                intent.putExtra("id", it.id)
+                intent.putExtra(ID, it.id)
                 startActivity(intent)
             }
         }

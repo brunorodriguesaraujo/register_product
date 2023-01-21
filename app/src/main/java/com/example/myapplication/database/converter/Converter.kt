@@ -6,7 +6,7 @@ import java.math.BigDecimal
 class Converter {
 
     @TypeConverter
-    fun doubleToBigdecimal(value: Double?): BigDecimal {
+    fun doubleToBigDecimal(value: Double?): BigDecimal {
         return value?.let { BigDecimal(it.toString()) } ?: BigDecimal.ZERO
     }
 
