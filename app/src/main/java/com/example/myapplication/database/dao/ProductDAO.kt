@@ -12,12 +12,9 @@ interface ProductDAO {
     @Query("SELECT * FROM ProductModel WHERE id=:id")
     fun getProductById(id: Long): ProductModel
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addProduct(vararg productModel: ProductModel)
 
     @Delete
     fun deleteProduct(productModel: ProductModel)
-
-    @Update
-    fun updateProduct(productModel: ProductModel)
 }
