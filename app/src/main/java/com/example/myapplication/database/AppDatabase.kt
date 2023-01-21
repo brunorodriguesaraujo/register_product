@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.myapplication.constants.DATABASE_NAME
 import com.example.myapplication.database.converter.Converter
 import com.example.myapplication.database.dao.ProductDAO
 import com.example.myapplication.model.ProductModel
@@ -15,14 +16,20 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDAO
 
     companion object {
+
+        @Volatile
+        private lateinit var dbInstance: AppDatabase
         fun instance(context: Context): AppDatabase {
-            return Room.databaseBuilder(
+            return if (::dbInstance.isInitialized) {
+                dbInstance
+            } else Room.databaseBuilder(
                 context,
                 AppDatabase::class.java,
-                "myapplication.db"
+                DATABASE_NAME
             )
                 .allowMainThreadQueries()
                 .build()
+                .also { dbInstance = it }
         }
     }
 }
