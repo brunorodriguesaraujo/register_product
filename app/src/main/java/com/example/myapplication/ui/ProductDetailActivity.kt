@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.R
 import com.example.myapplication.constants.ID
 import com.example.myapplication.database.AppDatabase
@@ -12,6 +13,8 @@ import com.example.myapplication.databinding.ActivityProductDetailBinding
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.extension.toFormatCurrencyBrazilian
 import com.example.myapplication.model.ProductModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -41,13 +44,19 @@ class ProductDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemEdit -> {
-                val intent = Intent(this, ProductRegisterActivity::class.java)
-                product?.let { intent.putExtra("id", it.id) }
-                startActivity(intent)
+                Intent(this, ProductRegisterActivity::class.java)
+                    .apply {
+                        product?.let {
+                            putExtra(ID, it.id)
+                            startActivity(this)
+                        }
+                    }
             }
             R.id.itemDelete -> {
                 product?.let {
-                    productDao.deleteProduct(it)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        productDao.deleteProduct(it)
+                    }
                     finish()
                 }
             }
@@ -57,7 +66,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun getProduct() {
         val id = intent.getLongExtra(ID, 0)
-        product = productDao.getProductById(id)
+        lifecycleScope.launch(Dispatchers.IO) {
+            product = productDao.getProductById(id)
+        }
     }
 
     private fun setFields() = with(binding) {

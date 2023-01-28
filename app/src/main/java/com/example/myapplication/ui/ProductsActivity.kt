@@ -3,9 +3,13 @@ package com.example.myapplication.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.constants.ID
 import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductsBinding
+import com.example.myapplication.model.ProductModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductsActivity : AppCompatActivity() {
 
@@ -30,14 +34,22 @@ class ProductsActivity : AppCompatActivity() {
     }
 
     private fun setAdapter() {
-        val db = AppDatabase.instance(this)
-        val productDAO = db.productDao()
+
         binding.rvProducts.apply {
-            adapter = ProductAdapter(productDAO.getProducts()) {
+            adapter = ProductAdapter(getProducts()) {
                 val intent = Intent(this@ProductsActivity, ProductDetailActivity::class.java)
                 intent.putExtra(ID, it.id)
                 startActivity(intent)
             }
         }
+    }
+
+    private fun getProducts(): List<ProductModel> {
+        val productDAO = AppDatabase.instance(this).productDao()
+        var list: List<ProductModel> = emptyList()
+        lifecycleScope.launch(Dispatchers.IO) {
+            list = productDAO.getProducts()
+        }
+        return list
     }
 }

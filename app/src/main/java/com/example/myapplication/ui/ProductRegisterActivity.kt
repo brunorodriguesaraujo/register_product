@@ -3,19 +3,22 @@ package com.example.myapplication.ui
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.constants.ID
 import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductRegisterBinding
 import com.example.myapplication.databinding.LayoutAddImageBinding
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.model.ProductModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ProductRegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductRegisterBinding
     private var url = ""
     private var product: ProductModel? = null
-    private val productDAO by lazy {
+    private val productDao by lazy {
         AppDatabase.instance(this).productDao()
     }
 
@@ -31,7 +34,9 @@ class ProductRegisterActivity : AppCompatActivity() {
 
     private fun getProduct() {
         val id = intent.getLongExtra(ID, 0L)
-        product = productDAO.getProductById(id)
+        lifecycleScope.launch(Dispatchers.IO) {
+            product = productDao.getProductById(id)
+        }
     }
 
     private fun setFields() = with(binding) {
@@ -73,7 +78,9 @@ class ProductRegisterActivity : AppCompatActivity() {
                 description = textInputEditTextDescription.text.toString(),
                 value = textInputEditTextValue.text.toString().toBigDecimal()
             )
-            productDAO.addProduct(productModel)
+            lifecycleScope.launch(Dispatchers.IO) {
+                productDao.addProduct(productModel)
+            }
             finish()
         }
     }
