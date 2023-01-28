@@ -3,34 +3,44 @@ package com.example.myapplication.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.dao.ProductDAO
+import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.constants.ID
+import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductsBinding
+import kotlinx.coroutines.launch
 
 class ProductsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductsBinding
+    private val productDAO by lazy { AppDatabase.instance(this).productDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setListener()
-    }
-
-    override fun onResume() {
-        super.onResume()
         setAdapter()
     }
 
     private fun setListener() {
         binding.productsFab.setOnClickListener {
-            val intent = Intent(this, ProductRegisterActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ProductRegisterActivity::class.java))
         }
     }
 
     private fun setAdapter() {
-        val products = ProductDAO()
-        binding.rvProducts.adapter = ProductAdapter(products.getProducts())
+        binding.rvProducts.apply {
+            lifecycleScope.launch {
+                productDAO.getProducts().collect {
+                    adapter = ProductAdapter(it) {
+                        Intent(this@ProductsActivity, ProductDetailActivity::class.java)
+                            .apply {
+                                putExtra(ID, it.id)
+                                startActivity(this)
+                            }
+                    }
+                }
+            }
+        }
     }
 }
