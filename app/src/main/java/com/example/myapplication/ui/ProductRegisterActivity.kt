@@ -3,16 +3,23 @@ package com.example.myapplication.ui
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.dao.ProductDAO
+import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.constants.ID
+import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductRegisterBinding
 import com.example.myapplication.databinding.LayoutAddImageBinding
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.model.ProductModel
+import kotlinx.coroutines.launch
 
 class ProductRegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductRegisterBinding
     private var url = ""
+    private var product: ProductModel? = null
+    private val productDao by lazy {
+        AppDatabase.instance(this).productDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +27,27 @@ class ProductRegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
         setListenerImage()
         setListenerButtonSave()
+        getProduct()
+    }
+
+    private fun getProduct() {
+        val id = intent.getLongExtra(ID, 0L)
+        lifecycleScope.launch {
+            productDao.getProductById(id).collect {
+                setFields(it)
+            }
+        }
+    }
+
+    private fun setFields(productModel: ProductModel?) = with(binding) {
+        product = productModel
+        productModel?.let {
+            ivProduct.loadUrl(it.url)
+            textInputEditTextName.setText(it.name)
+            textInputEditTextDescription.setText(it.description)
+            textInputEditTextValue.setText(it.value.toPlainString())
+        }
+
     }
 
     private fun setListenerImage() {
@@ -43,16 +71,17 @@ class ProductRegisterActivity : AppCompatActivity() {
     }
 
     private fun setListenerButtonSave() = with(binding) {
-        val productDAO = ProductDAO()
         btnSave.setOnClickListener {
-            productDAO.addProduct(
-                ProductModel(
-                    url = this@ProductRegisterActivity.url,
-                    name = textInputEditTextName.text.toString(),
-                    description = textInputEditTextDescription.text.toString(),
-                    value = textInputEditTextValue.text.toString().toBigDecimal()
-                )
+            val productModel = ProductModel(
+                id = product?.id ?: 0,
+                url = this@ProductRegisterActivity.url,
+                name = textInputEditTextName.text.toString(),
+                description = textInputEditTextDescription.text.toString(),
+                value = textInputEditTextValue.text.toString().toBigDecimal()
             )
+            lifecycleScope.launch {
+                productDao.addProduct(productModel)
+            }
             finish()
         }
     }
