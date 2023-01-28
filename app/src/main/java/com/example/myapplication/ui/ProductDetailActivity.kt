@@ -13,13 +13,12 @@ import com.example.myapplication.databinding.ActivityProductDetailBinding
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.extension.toFormatCurrencyBrazilian
 import com.example.myapplication.model.ProductModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProductDetailBinding
-    private var product: ProductModel? = null
+    private var productModel: ProductModel? = null
     private val productDao by lazy {
         AppDatabase.instance(this).productDao()
     }
@@ -28,12 +27,7 @@ class ProductDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
-
-    override fun onResume() {
-        super.onResume()
         getProduct()
-        setFields()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,18 +40,18 @@ class ProductDetailActivity : AppCompatActivity() {
             R.id.itemEdit -> {
                 Intent(this, ProductRegisterActivity::class.java)
                     .apply {
-                        product?.let {
+                        productModel?.let {
                             putExtra(ID, it.id)
                             startActivity(this)
                         }
                     }
             }
             R.id.itemDelete -> {
-                product?.let {
-                    lifecycleScope.launch(Dispatchers.IO) {
+                productModel?.let {
+                    lifecycleScope.launch {
                         productDao.deleteProduct(it)
+                        finish()
                     }
-                    finish()
                 }
             }
         }
@@ -66,12 +60,15 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun getProduct() {
         val id = intent.getLongExtra(ID, 0)
-        lifecycleScope.launch(Dispatchers.IO) {
-            product = productDao.getProductById(id)
+        lifecycleScope.launch {
+            productDao.getProductById(id).collect {
+                setFields(it)
+            }
         }
     }
 
-    private fun setFields() = with(binding) {
+    private fun setFields(product: ProductModel?) = with(binding) {
+        productModel = product
         product?.let {
             ivProductDetail.loadUrl(it.url)
             tvValue.text = it.value.toFormatCurrencyBrazilian()

@@ -10,7 +10,6 @@ import com.example.myapplication.databinding.ActivityProductRegisterBinding
 import com.example.myapplication.databinding.LayoutAddImageBinding
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.model.ProductModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProductRegisterActivity : AppCompatActivity() {
@@ -29,18 +28,20 @@ class ProductRegisterActivity : AppCompatActivity() {
         setListenerImage()
         setListenerButtonSave()
         getProduct()
-        setFields()
     }
 
     private fun getProduct() {
         val id = intent.getLongExtra(ID, 0L)
-        lifecycleScope.launch(Dispatchers.IO) {
-            product = productDao.getProductById(id)
+        lifecycleScope.launch {
+            productDao.getProductById(id).collect {
+                setFields(it)
+            }
         }
     }
 
-    private fun setFields() = with(binding) {
-        product?.let {
+    private fun setFields(productModel: ProductModel?) = with(binding) {
+        product = productModel
+        productModel?.let {
             ivProduct.loadUrl(it.url)
             textInputEditTextName.setText(it.name)
             textInputEditTextDescription.setText(it.description)
@@ -78,7 +79,7 @@ class ProductRegisterActivity : AppCompatActivity() {
                 description = textInputEditTextDescription.text.toString(),
                 value = textInputEditTextValue.text.toString().toBigDecimal()
             )
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch {
                 productDao.addProduct(productModel)
             }
             finish()
