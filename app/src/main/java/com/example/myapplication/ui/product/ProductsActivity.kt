@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.myapplication.ui.product
 
 import android.content.Intent
 import android.os.Bundle
