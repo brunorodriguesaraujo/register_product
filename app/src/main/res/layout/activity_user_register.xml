@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_16"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -34,6 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_16"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutUsername">
@@ -56,6 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8"
         android:layout_marginTop="@dimen/margin_16"
+        app:errorEnabled="true"
+        app:errorIconDrawable="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName"
@@ -67,7 +73,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:imeOptions="actionNext"
-            android:inputType="numberDecimal"
+            android:inputType="text"
             android:maxLines="1"
             android:textSize="@dimen/size_16" />
 
