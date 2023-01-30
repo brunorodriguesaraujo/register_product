@@ -20,4 +20,5 @@
     <string name="password">Senha</string>
     <string name="register">Cadastrar</string>
     <string name="empty_field">Campo vazio</string>
+    <string name="enter">Entrar</string>
 </resources>
