@@ -17,7 +17,7 @@ class UserRegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserRegisterBinding
     private var userModel = UserModel()
-    private val userDao = AppDatabase.instance(this).userDao()
+    private val userDao by lazy { AppDatabase.instance(this).userDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

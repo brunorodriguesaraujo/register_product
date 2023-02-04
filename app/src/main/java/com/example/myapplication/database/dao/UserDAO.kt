@@ -8,5 +8,5 @@ import com.example.myapplication.model.UserModel
 interface UserDAO {
 
     @Insert
-    fun registerUser(user: UserModel)
+    suspend fun registerUser(user: UserModel)
 }
