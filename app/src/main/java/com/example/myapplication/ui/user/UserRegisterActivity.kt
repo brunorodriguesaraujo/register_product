@@ -11,6 +11,7 @@ import com.example.myapplication.databinding.ActivityUserRegisterBinding
 import com.example.myapplication.extension.setErrorEmptyField
 import com.example.myapplication.model.UserModel
 import com.example.myapplication.model.isValid
+import com.example.myapplication.securance.hash
 import kotlinx.coroutines.launch
 
 class UserRegisterActivity : AppCompatActivity() {
@@ -58,7 +59,7 @@ class UserRegisterActivity : AppCompatActivity() {
         }
         textInputEditTextPassword.apply {
             doOnTextChanged { _, _, _, _ ->
-                userModel = userModel.copy(password = this.text.toString())
+                userModel = userModel.copy(password = this.text.toString().hash())
                 buttonIsEnabled()
             }
             doAfterTextChanged {

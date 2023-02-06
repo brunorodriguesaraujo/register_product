@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 userDao.authUser(
                     textInputEditTextUsername.text.toString(),
-                    textInputEditTextPassword.text.toString()
+                    textInputEditTextPassword.text.toString().hash()
                 )?.let {
                     startActivity(
                         Intent(
