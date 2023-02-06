@@ -6,12 +6,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.constants.USER_ID
 import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityLoginBinding
+import com.example.myapplication.extension.gotoStartActivity
 import com.example.myapplication.extension.setErrorEmptyField
 import com.example.myapplication.model.LoginModel
 import com.example.myapplication.model.isValid
+import com.example.myapplication.preferences.dataStore
+import com.example.myapplication.securance.hash
 import com.example.myapplication.ui.product.ProductsActivity
 import com.example.myapplication.ui.user.UserRegisterActivity
 import kotlinx.coroutines.launch
@@ -73,12 +79,10 @@ class LoginActivity : AppCompatActivity() {
                     textInputEditTextUsername.text.toString(),
                     textInputEditTextPassword.text.toString().hash()
                 )?.let {
-                    startActivity(
-                        Intent(
-                            this@LoginActivity,
-                            ProductsActivity::class.java
-                        )
-                    )
+                    dataStore.edit { preferences ->
+                        preferences[longPreferencesKey(USER_ID)] = it.id
+                    }
+                    gotoStartActivity(ProductsActivity::class.java)
                     finish()
                 } ?: Toast.makeText(
                     this@LoginActivity,
