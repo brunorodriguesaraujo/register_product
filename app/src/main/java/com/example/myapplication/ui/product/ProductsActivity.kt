@@ -1,14 +1,13 @@
 package com.example.myapplication.ui.product
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.lifecycle.lifecycleScope
-import com.example.myapplication.constants.ID
 import com.example.myapplication.constants.USER_ID
 import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductsBinding
+import com.example.myapplication.extension.gotoStartActivity
 import com.example.myapplication.preferences.dataStore
 import kotlinx.coroutines.launch
 
@@ -29,7 +28,7 @@ class ProductsActivity : AppCompatActivity() {
 
     private fun setListener() {
         binding.productsFab.setOnClickListener {
-            startActivity(Intent(this, ProductRegisterActivity::class.java))
+            gotoStartActivity(ProductRegisterActivity::class.java)
         }
     }
 
@@ -48,11 +47,7 @@ class ProductsActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 productDAO.getProducts().collect {
                     adapter = ProductAdapter(it) {
-                        Intent(this@ProductsActivity, ProductDetailActivity::class.java)
-                            .apply {
-                                putExtra(ID, it.id)
-                                startActivity(this)
-                            }
+                        gotoStartActivity(ProductDetailActivity::class.java)
                     }
                 }
             }

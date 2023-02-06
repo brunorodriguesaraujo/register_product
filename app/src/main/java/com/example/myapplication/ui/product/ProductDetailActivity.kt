@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.product
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +9,7 @@ import com.example.myapplication.R
 import com.example.myapplication.constants.ID
 import com.example.myapplication.database.AppDatabase
 import com.example.myapplication.databinding.ActivityProductDetailBinding
+import com.example.myapplication.extension.gotoStartActivity
 import com.example.myapplication.extension.loadUrl
 import com.example.myapplication.extension.toFormatCurrencyBrazilian
 import com.example.myapplication.model.ProductModel
@@ -38,13 +38,11 @@ class ProductDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemEdit -> {
-                Intent(this, ProductRegisterActivity::class.java)
-                    .apply {
-                        productModel?.let {
-                            putExtra(ID, it.id)
-                            startActivity(this)
-                        }
+                gotoStartActivity(ProductRegisterActivity::class.java) {
+                    productModel?.let {
+                        putExtra(ID, it.id)
                     }
+                }
             }
             R.id.itemDelete -> {
                 productModel?.let {
