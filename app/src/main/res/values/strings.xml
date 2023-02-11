@@ -21,4 +21,5 @@
     <string name="register">Cadastrar</string>
     <string name="empty_field">Campo vazio</string>
     <string name="enter">Entrar</string>
+    <string name="logout">Sair do aplicativo</string>
 </resources>

@@ -14,6 +14,6 @@ interface UserDAO {
     @Query("SELECT * FROM UserModel WHERE username =:username AND password =:password")
     suspend fun authUser(username: String, password: String): UserModel?
 
-    @Query("SELECT * FROM UserModel WHERE id =: id")
+    @Query("SELECT * FROM UserModel WHERE id =:id")
     suspend fun getUserById(id: Long): UserModel
 }
