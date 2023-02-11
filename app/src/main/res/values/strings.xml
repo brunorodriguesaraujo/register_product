@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <!-- ProductsActivity -->
     <string name="button_add_products_content">add products</string>
     <string name="image_product_content">image product</string>
+
+    <!-- ProductRegisterActivity -->
     <string name="nome">Nome</string>
     <string name="description">Descrição</string>
     <string name="value">Valor</string>
@@ -9,4 +13,13 @@
     <string name="url">URL</string>
     <string name="load">Carregar</string>
     <string name="edit">Editar</string>
+
+    <!-- UserRegisterActivity -->
+    <string name="register_user">Cadastrar Usuário</string>
+    <string name="user">Usuário</string>
+    <string name="password">Senha</string>
+    <string name="register">Cadastrar</string>
+    <string name="empty_field">Campo vazio</string>
+    <string name="enter">Entrar</string>
+    <string name="logout">Sair do aplicativo</string>
 </resources>

@@ -6,7 +6,7 @@ import com.example.myapplication.R
 
 fun ImageView.loadUrl(url: String){
     load(url) {
-        fallback(R.drawable.error)
+        fallback(R.drawable.img_placeholder)
         error(R.drawable.error)
         placeholder(R.drawable.placeholder)
     }

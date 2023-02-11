@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.myapplication.ui.product
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
